@@ -11,9 +11,7 @@ Before starting the exercise, we must define our directory, call all the librari
 The repository link is : https://github.com/GhinaMezher/dplyr-tp3.git
 
 
-```{r}
-#|echo: false
-#|message:false
+```{r, message=FALSE, echo=FALSE, warning=FALSE}
 library(here)
 here::i_am("dplyr-tp3.Rproj")
 library(tidyr)
@@ -34,13 +32,18 @@ spotify|>
   rename("Number of songs"=n)|>
   knitr::kable()
 ```
+The table here gives us the number of songs for each year. The function count helps us get rid of duplicates. 
+
 ### Question 3
 ```{r}
-spotify|>
+result<-spotify|>
   distinct (song, artist)|>
   count(artist)|>
   slice_max(n)
+result
 ```
+The artist with the largest amount of songs in the database (Tuesday's database) is `r result[1]` with `r result[2]` songs. the function count(artist) helps us count each song once and not get confused with duplicates on the chart.
+
 ### Question 4
 ```{r}
 c<-spotify|>  
@@ -50,6 +53,11 @@ c<-spotify|>
 
 knitr::kable(c)
 ```
+The table here shows us the minimum, maximum, mean and median bpm and the number of songs according to the musical genre.
+
+The function group_by(genre) helps us group the values for the avraibles we have selected (with distinct) according to the musical genre.
+Summarise calculates the values we want to put into our table and knitr::kable(c) takes the summarise values (implemented into the c variable) and puts them in a clean and clear teable.
+
 ### Question 5
 ```{r}
 spotify|>  
@@ -58,6 +66,9 @@ spotify|>
   summarise(median(energy),median(danceability))|>
   knitr::kable()
 ```
+This table represents the median energy and danceability of  songs for each year mentioned in our database.
+group_by(year) groups the values of each variable for each year in order to calculate the statistical values requested for each year.
+
 ### Question 6
 ```{r}
 spotify|>
@@ -67,6 +78,8 @@ spotify|>
   geom_line(aes(y=med_energy),color="blue")+
   geom_line(aes(y=med_dance),color="green")
 ```
+On this graph we can read the evolution of the median energy of songs in blue and in green the evolution of the median danceability of songs. 
+
 ## Exercise 2
 
 ```{r}
@@ -80,6 +93,8 @@ dropout|>
   group_by(`Marital status`,`Gender`)|>
   summarise("Median age"=median(`Age at enrollment`))
 ```
+This table represents the median age at enrollment according to the gender and marital status of the students in our database. 
+
 ### Question 2
 ```{r}
 dropout|>
@@ -90,16 +105,20 @@ dropout|>
   knitr::kable()
 
 ```
+Here we have a clearer representation of the previous table. For each marital status we can read the median age at enrollment for women and for men. 
+This is possible thanks to the function pivot_wider.
+
 ### Question 3
 ```{r}
 print(dropout|>
   group_by(`Target`)|>
   summarise(across(starts_with("Curricular units"),mean))) 
 ```
-It is too long to type all variables concerning the Curricular units
-La fonction across nous permet de balayer la data base et donc d'inclure plusieurs variables, starts_with permet de conditionner la sélection des variables de across à ce que le nom de la variable commence par "Curricular units". 
+It is too long to type all variables concerning the Curricular units. By using the across function we are able to include more than one variable without typing them out one by one by sifting through all the variables of the database.
+Starts_with helps us give a selection to the selection of variables by across, here the condition is starting with 'Curricular units'. 
 
-We could also attribute the code to a variable, mean_val and then do print(mean)
+We could also attribute the code to a variable, mean_val and then do print(mean_val) in order to reuse it in the rest of our code without typing the question 3 code all over again. 
+
 So we would have : mean_val<-dropout|> ... and then print(mean_val) on the next line
 
 ### Question 4
@@ -111,15 +130,15 @@ dropout|>
 #Here we can find the code from Q3, we could also attribute the code in Q3 to a variable named mean_val and call upon it here. 
 # The code will then become: mean_val|> pivot_longer ... 
 
-  pivot_longer(starts_with("Curricular units"),names_to="Units")|>  #columns are the Target, units and grades and each line contains info according to the 3 categories
-  pivot_wider(names_from=Target)|>  #helps us get 3 different columns for each type of Target so each line represents the grades for each target according to the unit
+  pivot_longer(starts_with("Curricular units"),names_to="Units")|>
+  pivot_wider(names_from=Target)|>
   knitr::kable()
-
-#pivot_longer and pivot_wider help us organize out table in order to better visualize our data
 
 ```
 
-
+The functions pivot_longer and pivot_wider help us organize our table in order to better visualize our data. 
+Pivot_wider gives us a table with 3 columns; Target, Units and value. 
+Pivot_longer makes the table more readable as each line represents a certain unit. And each unit line has 3 values, one for each type of target (dropout, graduate and enrolled)
 
 
 
