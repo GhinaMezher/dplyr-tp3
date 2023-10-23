@@ -1,0 +1,126 @@
+---
+title: "Dplyr TP3"
+author: "Ghina Mezher"
+message: false
+echo: false
+format: html
+---
+
+Before starting the exercise, we must define our directory, call all the libraries used during our lab, and attribute the data set we have downloaded to the variable "spotify".
+
+The repository link is : https://github.com/GhinaMezher/dplyr-tp3.git
+
+
+```{r}
+#|echo: false
+#|message:false
+library(here)
+here::i_am("dplyr-tp3.Rproj")
+library(tidyr)
+library(dplyr)
+library(ggplot2)
+spotify<-spotify <- readRDS("top-spotify-hits-2000-2019 (1).Rds")
+```
+## Exercise 1
+### Question 1
+
+The data set contains `r count(spotify %>% distinct (song))` songs, `r count(spotify %>% distinct (artist))` artists and `r count(spotify %>% distinct (genre))` genres. 
+
+## Question 2
+```{r}
+spotify|>
+  distinct (year, song)|>
+  count(year)|>
+  rename("Number of songs"=n)|>
+  knitr::kable()
+```
+### Question 3
+```{r}
+spotify|>
+  distinct (song, artist)|>
+  count(artist)|>
+  slice_max(n)
+```
+### Question 4
+```{r}
+c<-spotify|>  
+  distinct(song,genre,tempo,keep_all=TRUE)|>
+  group_by(genre)|>
+  summarise(mean(tempo),median(tempo),max(tempo),min(tempo),n())
+
+knitr::kable(c)
+```
+### Question 5
+```{r}
+spotify|>  
+  distinct(year,energy,danceability,keep_all=TRUE)|>
+  group_by(year)|>
+  summarise(median(energy),median(danceability))|>
+  knitr::kable()
+```
+### Question 6
+```{r}
+spotify|>
+  group_by(year)|>
+  summarise(med_energy=median(energy),med_dance=median(danceability))|>
+  ggplot(aes(x=year))+
+  geom_line(aes(y=med_energy),color="blue")+
+  geom_line(aes(y=med_dance),color="green")
+```
+## Exercise 2
+
+```{r}
+dropout <- readRDS("dropout (3).Rds")
+```
+
+### Question 1
+```{r}
+dropout|>
+  distinct(`Age at enrollment`,`Gender`,`Marital status`,keep_all=TRUE)|>
+  group_by(`Marital status`,`Gender`)|>
+  summarise("Median age"=median(`Age at enrollment`))
+```
+### Question 2
+```{r}
+dropout|>
+  distinct(`Age at enrollment`,`Gender`,`Marital status`,keep_all=TRUE)|>
+  group_by(`Marital status`,`Gender`)|>
+  summarise("Median age"=median(`Age at enrollment`))|>
+  pivot_wider(names_from=`Gender`,values_from="Median age")|>
+  knitr::kable()
+
+```
+### Question 3
+```{r}
+print(dropout|>
+  group_by(`Target`)|>
+  summarise(across(starts_with("Curricular units"),mean))) 
+```
+It is too long to type all variables concerning the Curricular units
+La fonction across nous permet de balayer la data base et donc d'inclure plusieurs variables, starts_with permet de conditionner la sélection des variables de across à ce que le nom de la variable commence par "Curricular units". 
+
+We could also attribute the code to a variable, mean_val and then do print(mean)
+So we would have : mean_val<-dropout|> ... and then print(mean_val) on the next line
+
+### Question 4
+```{r}
+dropout|>
+  group_by(`Target`)|>
+  summarise(across(starts_with("Curricular units"),mean))|> 
+
+#Here we can find the code from Q3, we could also attribute the code in Q3 to a variable named mean_val and call upon it here. 
+# The code will then become: mean_val|> pivot_longer ... 
+
+  pivot_longer(starts_with("Curricular units"),names_to="Units")|>  #columns are the Target, units and grades and each line contains info according to the 3 categories
+  pivot_wider(names_from=Target)|>  #helps us get 3 different columns for each type of Target so each line represents the grades for each target according to the unit
+  knitr::kable()
+
+#pivot_longer and pivot_wider help us organize out table in order to better visualize our data
+
+```
+
+
+
+
+
+
