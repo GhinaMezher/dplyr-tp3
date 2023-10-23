@@ -192,7 +192,7 @@ ul.task-list{list-style: none;}
 1 Rihanna    23</code></pre>
 </div>
 </div>
-<p>The artist with the largest amount of songs in the database (tuesday database) is Rihanna with 23 songs. the fonction count(artist) helps us count each song once and not get confused with duplicates on the chart.</p>
+<p>The artist with the largest amount of songs in the database (Tuesday’s database) is Rihanna with 23 songs. the function count(artist) helps us count each song once and not get confused with duplicates on the chart.</p>
 </section>
 <section id="question-4" class="level3">
 <h3 class="anchored" data-anchor-id="question-4">Question 4</h3>
@@ -694,6 +694,8 @@ ul.task-list{list-style: none;}
 </table>
 </div>
 </div>
+<p>The table here shows us the minimum, maximum, mean and median bpm and the number of songs according to the musical genre.</p>
+<p>The function group_by(genre) helps us group the values for the avraibles we have selected (with distinct) according to the musical genre. Summarise calculates the values we want to put into our table and knitr::kable(c) takes the summarise values (implemented into the c variable) and puts them in a clean and clear teable.</p>
 </section>
 <section id="question-5" class="level3">
 <h3 class="anchored" data-anchor-id="question-5">Question 5</h3>
@@ -827,6 +829,7 @@ ul.task-list{list-style: none;}
 </table>
 </div>
 </div>
+<p>This table represents the median energy and danceability of songs for each year mentioned in our database. group_by(year) groups the values of each variable for each year in order to calculate the statistical values requested for each year.</p>
 </section>
 <section id="question-6" class="level3">
 <h3 class="anchored" data-anchor-id="question-6">Question 6</h3>
@@ -835,6 +838,7 @@ ul.task-list{list-style: none;}
 <p><img src="dplyr-tp3_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
+<p>On this graph we can read the evolution of the median energy of songs in blue and in green the evolution of the median danceability of songs.</p>
 </section>
 </section>
 <section id="exercise-2" class="level2">
@@ -868,6 +872,7 @@ the `.groups` argument.</code></pre>
 12 legally separated Female         41  </code></pre>
 </div>
 </div>
+<p>This table represents the median age at enrollment according to the gender and marital status of the students in our database.</p>
 </section>
 <section id="question-2-1" class="level3">
 <h3 class="anchored" data-anchor-id="question-2-1">Question 2</h3>
@@ -920,6 +925,7 @@ the `.groups` argument.</code></pre>
 </table>
 </div>
 </div>
+<p>Here we have a clearer representation of the previous table. For each marital status we can read the median age at enrollment for women and for men. This is possible thanks to the function pivot_wider.</p>
 </section>
 <section id="question-3-1" class="level3">
 <h3 class="anchored" data-anchor-id="question-3-1">Question 3</h3>
